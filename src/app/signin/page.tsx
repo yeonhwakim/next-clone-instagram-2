@@ -5,8 +5,11 @@ type Props = {
   searchParams: { callbackUrl: string | undefined };
 };
 export default async function SignInPage({
-  searchParams: { callbackUrl },
+  searchParams
 }: Props) {
+
+  const { callbackUrl } = await searchParams
+
   return (
     <div className="flex justify-center mt-24 ">
       {Object.values(providerMap).map((provider) => (
