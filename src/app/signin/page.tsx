@@ -8,7 +8,7 @@ export default async function SignInPage({
   searchParams: { callbackUrl },
 }: Props) {
   return (
-    <div className="flex justify-center mt-[30%] ">
+    <div className="flex justify-center mt-24 ">
       {Object.values(providerMap).map((provider) => (
         <form
           key={provider.id}

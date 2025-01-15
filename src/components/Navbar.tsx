@@ -11,6 +11,7 @@ import SearchFillIcon from "./ui/icons/SearchFillIcon";
 import SearchIcon from "./ui/icons/SearchIcon";
 import { usePathname } from "next/navigation";
 import ColorButton from "./ui/ColorButton";
+import Avatar from "./Avatar";
 
 const menu = [
   {
@@ -32,6 +33,7 @@ const menu = [
 export default function Navbar() {
   const pathName = usePathname();
   const { data: session } = useSession();
+  const user = session?.user;
 
   return (
     <div className="flex justify-between items-center px-6">
@@ -47,19 +49,28 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
-          {session ? (
-            <ColorButton
-              text="Sign out"
-              type="button"
-              onClick={() => signOut()}
-            />
-          ) : (
-            <ColorButton
-              text="Sign in"
-              type="button"
-              onClick={() => signIn()}
-            />
+          {user && (
+            <li>
+              <Link href={`/user/${user.username}`}>
+                <Avatar image={user?.image} />
+              </Link>
+            </li>
           )}
+          <li>
+            {session ? (
+              <ColorButton
+                text="Sign out"
+                type="button"
+                onClick={() => signOut()}
+              />
+            ) : (
+              <ColorButton
+                text="Sign in"
+                type="button"
+                onClick={() => signIn()}
+              />
+            )}
+          </li>
         </ul>
       </nav>
     </div>
