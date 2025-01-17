@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { getFollowingPpostOf } from "@/service/post";
+import { getFollowingPpostOf } from "@/service/posts";
 import { NextResponse } from "next/server";
 
 export async function GET() {
