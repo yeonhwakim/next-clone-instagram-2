@@ -6,13 +6,13 @@ type Props = {
   name: string;
   username: string;
   email: string;
-  image?: string | null
-}
+  image?: string | null;
+};
 
 export async function addUser({ id, name, username, email, image }: Props) {
   return client.createIfNotExists({
     _id: email.replace(/@/g, "-at-").replace(/\./g, "-dot-"),
-    _type: 'user',
+    _type: "user",
     name,
     username,
     email,
@@ -20,7 +20,7 @@ export async function addUser({ id, name, username, email, image }: Props) {
     following: [],
     followers: [],
     bookmarks: [],
-  })
+  });
 }
 
 export async function getUserByUsername(username: string) {
@@ -32,19 +32,28 @@ export async function getUserByUsername(username: string) {
       followers[]->{username, image},
       "bookmarks":bookmarks[]->_id
     }`
-  )
+  );
 }
 
 export async function searchUsers(keyword?: string) {
-  const query = keyword ? `&& (name match "${keyword}") || (username match "${keyword}")` : ''
+  const query = keyword
+    ? `&& (name match "${keyword}" + "*") || (username match "${keyword}" + "*")`
+    : "";
 
-  return client.fetch(
-    `*[_type == "user" ${query}]{
+  return client
+    .fetch(
+      `*[_type == "user" ${query}]{
       ...,
       "following": count(following),
       "followers": count(followers),
     }
     `
-  ).then(users => users.map((user: ProfileUser) => ({ ...user, following: user.following ?? 0, followers: user.followers ?? 0 })))
-
+    )
+    .then((users) =>
+      users.map((user: ProfileUser) => ({
+        ...user,
+        following: user.following ?? 0,
+        followers: user.followers ?? 0,
+      }))
+    );
 }
