@@ -1,14 +1,17 @@
 import { signIn, providerMap } from "@/auth";
 import ColorButton from "@/components/ui/ColorButton";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Signin",
+  description: "Signup or Login to Instantgram",
+};
 
 type Props = {
   searchParams: { callbackUrl: string | undefined };
 };
-export default async function SignInPage({
-  searchParams
-}: Props) {
-
-  const { callbackUrl } = await searchParams
+export default async function SignInPage({ searchParams }: Props) {
+  const { callbackUrl } = await searchParams;
 
   return (
     <div className="flex justify-center mt-24 ">
