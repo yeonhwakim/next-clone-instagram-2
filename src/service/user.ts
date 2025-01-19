@@ -1,4 +1,4 @@
-import { ProfileUser } from "@/model/user";
+import { SearchUser } from "@/model/user";
 import { client } from "@/sanity";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   image?: string | null;
 };
 
-export async function addUser({ id, name, username, email, image }: Props) {
+export async function addUser({ name, username, email, image }: Props) {
   return client.createIfNotExists({
     _id: email.replace(/@/g, "-at-").replace(/\./g, "-dot-"),
     _type: "user",
@@ -50,10 +50,28 @@ export async function searchUsers(keyword?: string) {
     `
     )
     .then((users) =>
-      users.map((user: ProfileUser) => ({
+      users.map((user: SearchUser) => ({
         ...user,
         following: user.following ?? 0,
         followers: user.followers ?? 0,
       }))
     );
+}
+
+export async function getUserforProfile(username: string) {
+  return client
+    .fetch(
+      `*[_type == "user" && username == "${username}"][0]{
+      ...,
+      "following": count(following),
+      "followers": count(followers),
+      "posts": count(*[_type == "post" && author->username == "${username}"])
+    }`
+    )
+    .then((user) => ({
+      ...user,
+      following: user.following ?? 0,
+      followers: user.followers ?? 0,
+      posts: user.posts ?? 0,
+    }));
 }
