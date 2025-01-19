@@ -1,7 +1,7 @@
 import { RiBookmarkLine } from "react-icons/ri";
 
 type Props = {
-  className: string;
+  className?: string;
 };
 
 export default function BookmarkIcon({ className }: Props) {

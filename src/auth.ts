@@ -17,14 +17,21 @@ export const providerMap = providers
   .filter((provider) => provider.id !== "credentials");
 
 const authOptions: NextAuthConfig = {
+  trustHost: true,
   providers,
   callbacks: {
     async signIn({ user: { id, name, email, image } }) {
       if (!email) {
-        return false
+        return false;
       }
-      addUser({ id: id || '', name: name || '', email, image, username: email.split("@")[0] })
-      return true
+      addUser({
+        id: id || "",
+        name: name || "",
+        email,
+        image,
+        username: email.split("@")[0],
+      });
+      return true;
     },
     async session({ session }) {
       const user = session?.user;
@@ -34,7 +41,6 @@ const authOptions: NextAuthConfig = {
           ...user,
           username: user.email.split("@")[0],
         };
-
       }
       return session;
     },

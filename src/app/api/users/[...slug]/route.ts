@@ -2,9 +2,9 @@ import { getLikedPostsOf, getPostsOf, getSavedPostsOf } from "@/service/posts";
 import { NextRequest, NextResponse } from "next/server";
 
 type Context = {
-  params: {
+  params: Promise<{
     slug: string[];
-  };
+  }>;
 };
 export async function GET(_: NextRequest, context: Context) {
   const { slug } = await context.params;

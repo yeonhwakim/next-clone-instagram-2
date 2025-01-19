@@ -8,7 +8,7 @@ import Avatar from "./Avatar";
 import ScrollavleBar from "./ui/ScrollableBar";
 
 export default function FollowingBar() {
-  const { data, isLoading: loading, error } = useSWR<HomeUser>("/api/me");
+  const { data, isLoading: loading } = useSWR<HomeUser>("/api/me");
   // const users = data?.following
   const users = data?.following && [
     ...data?.following,
@@ -21,7 +21,7 @@ export default function FollowingBar() {
       {loading ? (
         <PropagateLoader size={8} color="red" />
       ) : (
-        !users || (users.length === 0 && <p>You don't have following</p>)
+        !users || (users.length === 0 && <p>{"You don't have following"}</p>)
       )}
       {users && users.length > 0 && (
         <ScrollavleBar>

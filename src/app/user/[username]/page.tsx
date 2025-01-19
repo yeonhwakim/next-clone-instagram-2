@@ -6,9 +6,9 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 
 type Props = {
-  params: {
+  params: Promise<{
     username: string;
-  };
+  }>;
 };
 
 const getUser = cache(async (username: string) => getUserforProfile(username));

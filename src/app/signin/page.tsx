@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: { callbackUrl: string | undefined };
+  searchParams: Promise<{ callbackUrl: string | undefined }>;
 };
 export default async function SignInPage({ searchParams }: Props) {
   const { callbackUrl } = await searchParams;
