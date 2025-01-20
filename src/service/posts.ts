@@ -81,17 +81,16 @@ function mapPosts(posts: SimplePost[]) {
 }
 
 export async function likePost(postId: string, userId: string) {
-  console.log(postId, userId)
-  return client.patch(postId)
+  return client
+    .patch(postId)
     .setIfMissing({ likes: [] })
-    .append('likes', [
-      { _ref: userId, _type: 'reference' }
-    ])
-    .commit({ autoGenerateArrayKeys: true })
+    .append("likes", [{ _ref: userId, _type: "reference" }])
+    .commit({ autoGenerateArrayKeys: true });
 }
 
 export async function dislikePost(postId: string, userId: string) {
-  return client.patch(postId)
+  return client
+    .patch(postId)
     .unset([`likes[_ref=="${userId}"]`])
-    .commit()
+    .commit();
 }

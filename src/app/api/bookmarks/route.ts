@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { dislikePost, likePost } from "@/service/posts";
+import { addBookmark, removeBookmark } from "@/service/user";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req: NextRequest) {
@@ -10,15 +10,15 @@ export async function PUT(req: NextRequest) {
     return new Response("Authentication Error", { status: 400 });
   }
 
-  const { id, like } = await req.json();
+  const { id, bookmark } = await req.json();
 
-  if (!id || like === undefined) {
+  if (!id || bookmark === undefined) {
     return new Response("Bad Request", { status: 400 });
   }
 
-  const request = like ? likePost : dislikePost;
+  const request = bookmark ? addBookmark : removeBookmark;
 
-  return request(id, user.id) //
+  return request(user.id, id) //
     .then((res) => NextResponse.json(res))
     .catch((error) => new Response(JSON.stringify(error), { status: 500 }));
 }
