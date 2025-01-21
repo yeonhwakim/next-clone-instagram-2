@@ -8,6 +8,7 @@ const simplePostProjection = `
   "image": photo,
   "likes": likes[]->username,
   "text": comments[0].comment,
+  "comments": count(comments),
   "id": _id,
   "createdAt":_createdAt
 `;
@@ -93,4 +94,12 @@ export async function dislikePost(postId: string, userId: string) {
     .patch(postId)
     .unset([`likes[_ref=="${userId}"]`])
     .commit();
+}
+
+export async function addComment(postId: string, userId: string, comment: string) {
+  return client
+    .patch(postId)
+    .setIfMissing({ comments: [] })
+    .append("comment", [{ comment, author: { _ref: userId, _type: 'reference' } }])
+    .commit({ autoGenerateArrayKeys: true });
 }

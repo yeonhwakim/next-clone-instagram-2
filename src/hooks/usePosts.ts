@@ -9,7 +9,7 @@ async function updateLike(id: string, like: boolean) {
 }
 
 export default function usePosts() {
-  const { data: posts, isLoading, error, mutate } = useSWR<SimplePost[]>('/api/posts')
+  const { data: posts, isLoading, error, mutate } = useSWR<SimplePost[]>('/api/posts');
 
   const setLike = (post: SimplePost, username: string, like: boolean) => {
     const newPost = { ...post, likes: like ? [...post.likes, username] : post.likes.filter(item => item !== username) }
