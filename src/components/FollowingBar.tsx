@@ -11,8 +11,6 @@ export default function FollowingBar() {
 
   const users = user?.following && [
     ...user?.following,
-    ...user?.following,
-    ...user?.following,
   ];
 
   return (
