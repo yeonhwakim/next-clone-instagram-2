@@ -63,10 +63,13 @@ export async function getUserforProfile(username: string) {
     .fetch(
       `*[_type == "user" && username == "${username}"][0]{
       ...,
+      "id": _id,
       "following": count(following),
       "followers": count(followers),
       "posts": count(*[_type == "post" && author->username == "${username}"])
-    }`
+    }`,
+      undefined,
+      { cache: "no-store" }
     )
     .then((user) => ({
       ...user,
@@ -92,7 +95,8 @@ export async function removeBookmark(userId: string, postId: string) {
 }
 
 export async function follow(myId: string, targetId: string) {
-  return client.transaction()
+  return client
+    .transaction()
     .patch(myId, (user) =>
       user
         .setIfMissing({ following: [] })
@@ -102,12 +106,14 @@ export async function follow(myId: string, targetId: string) {
       user
         .setIfMissing({ followers: [] })
         .append("followers", [{ _ref: myId, _type: "reference" }])
-    ).commit({ autoGenerateArrayKeys: true });
+    )
+    .commit({ autoGenerateArrayKeys: true });
 }
 
 export async function unFollow(myId: string, targetId: string) {
-  return client.transaction()
+  return client
+    .transaction()
     .patch(myId, (user) => user.unset([`following[_ref=="${targetId}"]`]))
     .patch(targetId, (user) => user.unset([`followers[_ref=="${myId}"]`]))
     .commit();
-} 
+}

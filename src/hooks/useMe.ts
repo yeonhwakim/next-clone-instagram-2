@@ -1,4 +1,4 @@
-import { HomeUser, SimpleUser } from "@/model/user";
+import { HomeUser } from "@/model/user";
 import { useCallback } from "react";
 import useSWR from "swr";
 
@@ -42,8 +42,7 @@ export default function useMe() {
 
   const toggleFollow = useCallback(
     (targetId: string, follow: boolean) => {
-      if (!user) return;
-
+      console.log(targetId, follow);
       return mutate(updateFollow(targetId, follow), {
         populateCache: false,
       });
