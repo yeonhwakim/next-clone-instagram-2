@@ -43,12 +43,14 @@ export default function ActionBar({ post, children, onComment }: Props) {
     <>
       <div className="flex justify-between items-center my-2 px-4">
         <ToggleButton
+          title={liked ? 'unlike' : 'like'}
           toggled={liked}
           onToggle={handleLike}
           onIcon={<HeartFillIcon />}
           offIcon={<HeartIcon />}
         />
         <ToggleButton
+          title={liked ? 'unbookmark' : 'bookmark'}
           toggled={bookmarked}
           onToggle={handleBookmark}
           onIcon={<BookmarkFillIcon />}
@@ -56,9 +58,8 @@ export default function ActionBar({ post, children, onComment }: Props) {
         />
       </div>
       <div className="px-4 py-1">
-        <p className="text-sm font-bold mb-2">{`${likes?.length ?? 0} ${
-          likes?.length > 1 ? "likes" : "like"
-        }`}</p>
+        <p className="text-sm font-bold mb-2">{`${likes?.length ?? 0} ${likes?.length > 1 ? "likes" : "like"
+          }`}</p>
         {children}
         <p className="text-xs text-neutral-500 uppercase my-2">
           {parseDate(createdAt)}
